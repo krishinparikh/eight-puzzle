@@ -16,6 +16,8 @@ const App: React.FC = () => {
 
   // Handle key presses to manipulate the puzzle
   const handleKeyDown = (event: KeyboardEvent) => {
+    event.preventDefault(); // Prevent scrolling on arrow key press
+
     const { row, col } = blankPosition;
     let newPuzzle = [...puzzle.map(row => [...row])];
 
@@ -61,7 +63,7 @@ const App: React.FC = () => {
         <h1>8-Puzzle Solver</h1>
         <p>
           Play with an online version of the famous 8-Puzzle using your arrow keys. Click "Solve" to find and compare three different
-          algorithmic solutions to your scrambled puzzle. To learn more, please visit this project's <a href="https://github.com/krishinparikh/eight-puzzle" target="_blank" rel="noopener noreferrer">GitHub repository</a>. Enjoy!
+          algorithmic solutions to your scrambled puzzle. To learn more, please visit this project's <a href="https://github.com/krishinparikh/eight-puzzle/" target="_blank" rel="noopener noreferrer">GitHub repository</a>. Enjoy!
         </p>
       </header>
       <div className="puzzle-and-solutions">
