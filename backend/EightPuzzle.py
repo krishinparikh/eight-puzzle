@@ -9,8 +9,9 @@ import numpy as np
 class EightPuzzle:
 
     # Initializes an eight-puzzle and sets the initial state to a solved position
-    def __init__(self):
-        self.state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+    def __init__(self, initial_state=None):
+        # Default to the solved position if no state is provided
+        self.state = initial_state if initial_state else [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
 
     # Helper method
     # Returns a 2D array given a string of numbers
@@ -166,7 +167,8 @@ class Agent:
 
                             # Check if the child is the goal
                             if child_stringState == Agent.goal_stringState:
-                                return nodes_created if gettingNodesCreated else Agent.printSearchSolution(child_node, nodes_created)
+                                # Originally, this line used Agent.printSearchSolution(), but was changed to support Flask API call
+                                return nodes_created if gettingNodesCreated else Agent.stringSearchSolution(child_node, nodes_created)
 
                             frontier.append(child_node)
                             visited.add(child_stringState)
@@ -211,8 +213,8 @@ class Agent:
                             # print("Child: " + child_stringState)
                             # Check if the child is the goal
                             if child_stringState == Agent.goal_stringState:
-                                # print(visited)
-                                return nodes_created if gettingNodesCreated else Agent.printSearchSolution(child_node, nodes_created)
+                                # Originally, this line used Agent.printSearchSolution(), but was changed to support Flask API call
+                                return nodes_created if gettingNodesCreated else Agent.stringSearchSolution(child_node, nodes_created)
 
                             frontier.append(child_node)
                             visited.add(child_stringState)
@@ -248,6 +250,35 @@ class Agent:
             for move in solution:
                 print("move " + move)
         print("")
+
+    # Deconstructs the solution for either search algorithm by traversing up the tree and returns a string of the solution
+    @staticmethod
+    def stringSearchSolution(goal_node, nodes_created):
+        # Initialize the result string
+        result = ""
+        result += "Nodes created during search: " + str(nodes_created) + "\n\n"
+        
+        current_node = goal_node
+        solution = []
+        
+        # Reconstructing moves to solve puzzle
+        while current_node.parent is not None:
+            # Appends the moves to the solution list in reverse order
+            solution = [current_node.prev_move] + solution
+            # Makes the current node the parent
+            current_node = current_node.parent
+        
+        result += "Solution length: " + str(len(solution)) + "\n\n"
+        result += "Move sequence:\n\n"
+        
+        # Appends the moves in the solution list to the result string
+        if len(solution) > 0:
+            for move in solution:
+                result += "move " + move + "\n\n"
+        
+        return result
+
+
     
     # Returns the number of misplaced tiles
     @staticmethod
@@ -329,7 +360,8 @@ class Agent:
 
                             # Check if the child is the goal state
                             if child_stringState == Agent.goal_stringState:
-                                return nodes_created if gettingNodesCreated else Agent.printSearchSolution(child_node, nodes_created)
+                                # Originally, this line used Agent.printSearchSolution(), but was changed to support Flask API call
+                                return nodes_created if gettingNodesCreated else Agent.stringSearchSolution(child_node, nodes_created)
 
                             # Add child node to the priority queue and update the visited map
                             frontier.put(child_node)

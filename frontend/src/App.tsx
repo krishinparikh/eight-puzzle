@@ -11,7 +11,8 @@ const initialPuzzle = [
 
 const App: React.FC = () => {
   const [puzzle, setPuzzle] = useState(initialPuzzle);
-  const [blankPosition, setBlankPosition] = useState({ row: 2, col: 2 });
+  const [blankPosition, setBlankPosition] = useState({ row: 0, col: 0 });
+  const [solutions, setSolutions] = useState<string[] | null>(null);
 
   // Handle key presses to manipulate the puzzle
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -55,30 +56,65 @@ const App: React.FC = () => {
 
   // Render the puzzle as a grid
   return (
-    <div className="puzzle-container">
-      {puzzle.map((row, rowIndex) => (
-        <div key={rowIndex} className="puzzle-row">
-          {row.map((cell, colIndex) => (
-            <div key={colIndex} className={`puzzle-cell ${cell === 0 ? 'blank' : ''}`}>
-              {cell !== 0 && cell}
+    <div className="app-container">
+      <header className="app-header" style={{ paddingLeft: '20px' }}>
+        <h1>8-Puzzle Solver</h1>
+        <p>
+          Play with an online version of the famous 8-Puzzle using your arrow keys. Click "Solve" to find and compare three different
+          algorithmic solutions to your scrambled puzzle. To learn more, please visit this project's <a href="https://github.com/krishinparikh/eight-puzzle" target="_blank" rel="noopener noreferrer">GitHub repository</a>. Enjoy!
+        </p>
+      </header>
+      <div className="puzzle-and-solutions">
+        <div className="puzzle-container">
+          {puzzle.map((row, rowIndex) => (
+            <div key={rowIndex} className="puzzle-row">
+              {row.map((cell, colIndex) => (
+                <div key={colIndex} className={`puzzle-cell ${cell === 0 ? 'blank' : ''}`}>
+                  {cell !== 0 && cell}
+                </div>
+              ))}
             </div>
           ))}
+          <button
+            className="solve-button"
+            onClick={async () => {
+              try {
+                const response = await fetch('http://127.0.0.1:5000/solve', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ puzzle }),
+                });
+                if (response.ok) {
+                  const data = await response.json();
+                  setSolutions(data.solutions); // Assuming the API sends an array of solutions
+                } else {
+                  console.error('Failed to fetch solutions');
+                }
+              } catch (error) {
+                console.error('Error:', error);
+              }
+            }}
+          >
+            Solve
+          </button>
         </div>
-      ))}
-      <button
-        className="solve-button"
-        onClick={async () => {
-          const response = await fetch('http://127.0.0.1:8000/solve', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ puzzle }),
-          });
-          const solution = await response.json();
-          console.log(solution); // Replace with handling solution logic
-        }}
-      >
-        Solve
-      </button>
+        {solutions && (
+          <div className="solutions-grid">
+            {solutions.map((solution, index) => (
+              <div key={index} className="solution-column">
+                <h4>
+                  {index === 0
+                    ? 'Breadth First Search Solution'
+                    : index === 1
+                    ? 'A* Search (Heuristic 1) Solution'
+                    : 'A* Search (Heuristic 2) Solution'}
+                </h4>
+                <pre>{solution}</pre>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

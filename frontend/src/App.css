@@ -1,11 +1,18 @@
 /* App.css */
 
-/* Style the overall puzzle container */
-.puzzle-container {
+/* Align the puzzle and solutions side by side */
+.puzzle-and-solutions {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* Space between puzzle and solutions */
+    padding: 20px;
+  }
+  
+  /* Style the puzzle container */
+  .puzzle-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
+    align-items: flex-start;
   }
   
   /* Style each row in the puzzle */
@@ -20,33 +27,50 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #333;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    background-color: #f0f0f0;
-    border-radius: 2px; /* Adds rounded corners */
+    color: #333;
+    background-color: #f9f9f9; /* Light background for cells */
+    border: 1px solid #ccc; /* Subtle border around cells */
+    margin: 2px; /* Small spacing between cells */
+    border-radius: 4px; /* Rounded corners for a clean look */
   }
   
-  /* Style the blank cell */
+  /* Highlight the blank cell */
   .puzzle-cell.blank {
-    background-color: #ddd;
-    border: 2px dashed #999;
+    background-color: #e0e0e0; /* Slightly darker background for blank cell */
   }
   
   /* Style the solve button */
   .solve-button {
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 10px;
+    padding: 12px 30px;
     font-size: 16px;
+    background-color: #007bff; /* Primary blue button */
     color: white;
-    background-color: #007bff;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-weight: bold;
   }
   
   .solve-button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Style the grid of solutions */
+  .solutions-grid {
+    display: flex; /* Use row layout */
+    flex-wrap: wrap; /* Allow wrapping if solutions exceed available space */
+    gap: 20px; /* Space between solution columns */
+  }
+  
+  /* Style each solution column */
+  .solution-column {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 200px; /* Minimum width for consistent columns */
   }
   
