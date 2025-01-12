@@ -53,16 +53,16 @@ class EightPuzzle:
     def move(self, direction):
         i, j = self.findZeroIndeces()
         
-        if direction == 'up' and i > 0:
+        if direction == 'down' and i > 0:
             self.state[i][j], self.state[i-1][j] = self.state[i-1][j], self.state[i][j]
             return True
-        elif direction == 'down' and i < 2:
+        elif direction == 'up' and i < 2:
             self.state[i][j], self.state[i+1][j] = self.state[i+1][j], self.state[i][j]
             return True
-        elif direction == 'left' and j > 0:
+        elif direction == 'right' and j > 0:
             self.state[i][j], self.state[i][j-1] = self.state[i][j-1], self.state[i][j]
             return True
-        elif direction == 'right' and j < 2:
+        elif direction == 'left' and j < 2:
             self.state[i][j], self.state[i][j+1] = self.state[i][j+1], self.state[i][j]
             return True
         else:

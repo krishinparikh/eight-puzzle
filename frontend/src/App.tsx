@@ -63,7 +63,7 @@ const App: React.FC = () => {
         <h1>8-Puzzle Solver</h1>
         <p>
           Play with an online version of the famous 8-Puzzle using your arrow keys. Click "Solve" to find and compare three different
-          algorithmic solutions to your scrambled puzzle. To learn more, please visit this project's <a href="https://github.com/krishinparikh/eight-puzzle/" target="_blank" rel="noopener noreferrer">GitHub repository</a>. Enjoy!
+          algorithmic solutions to your scrambled puzzle. To learn more, please visit this project's <a href="https://github.com/krishinparikh/eight-puzzle" target="_blank" rel="noopener noreferrer">GitHub repository</a>. Enjoy!
         </p>
       </header>
       <div className="puzzle-and-solutions">
@@ -81,7 +81,7 @@ const App: React.FC = () => {
             className="solve-button"
             onClick={async () => {
               try {
-                const response = await fetch('http://127.0.0.1:5000/solve', {
+                const response = await fetch('https://eight-puzzle-backend.onrender.com/solve', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ puzzle }),
